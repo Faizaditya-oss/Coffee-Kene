@@ -1,78 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('partials/header') %>
+<%- include('partials/header') %>
 
-  <section id="home" class="hero w-100 p-5 d-flex align-items-center">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <img src="/img/image 2.png" alt="Coffee Product" class="img-fluid" />
-        </div>
-
-        <div class="col-md-6 text-start">
-          <h1
-            class="fw-bold mb-4 fst-italic text-dark"
-            style="font-family: 'DM Serif Text'; font-size: 3.5rem"
-          >
-            KopiKene.
-          </h1>
-          <h4 class="text-primary fw-bold mb-1" style="font-size: 1.1rem">
-            Wis, KopiKene wae!
-          </h4>
-          <p class="text-secondary" style="font-size: 1.1rem; line-height: 1.6">
-            KopiKene adalah tempat di mana waktu seolah melambat, membiarkanmu
-            menikmati aroma kopi yang jujur dan suasana yang tulus. Karena bagi
-            kami, kopi terbaik adalah kopi yang dinikmati bersama di sini.
-          </p>
-          <a
-            href="#menu"
-            class="btn btn-warning px-4 py-2 text-white fw-bold"
-            style="border-radius: 2rem; background-color: #ff9800; border: none"
-          >
-            BUY NOW
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section
-    id="profile"
-    class="about pt-4 pt-md-5 pb-5 min-vh-100"
-    style="background-color: #fdfaf5"
-  >
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-6 pe-md-5">
-          <h2
-            class="fw-bold mb-3 mt-0"
-            style="font-family: 'DM Serif Text'; font-size: 2.5rem"
-          >
-            Our Story
-          </h2>
-          <p class="text-muted" style="color: #0d6efd !important">est.2023</p>
-          <p class="text-secondary" style="line-height: 1.8; font-size: 1.1rem">
-            Berdiri sejak tahun 2023, <strong>KopiKene.</strong> lahir dari
-            kecintaan kami terhadap ritual sederhana minum kopi. Kami percaya
-            bahwa setiap cangkir memiliki cerita uniknya sendiri.
-          </p>
-          <p class="text-secondary" style="line-height: 1.8; font-size: 1.1rem">
-            Kami bekerja sama dengan petani lokal untuk memastikan biji kopi
-            terbaik sampai ke tangan Anda. Misi kami bukan hanya menyajikan kopi
-            berkualitas, tapi juga menciptakan ruang yang nyaman untuk berbagi
-            inspirasi dan kebahagiaan di setiap tegukannya.
-          </p>
-        </div>
-
-        <div class="col-md-4 mt-4 mt-md-4">
-          <img
-            src="/img/tempatkopi.jpg"
-            alt="Our Story"
-            class="img-fluid rounded shadow-sm"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
+<body>
   <section id="menu" class="py-5 min-vh-100" style="background-color: #fff">
     <div class="container">
       <h2 class="text-center mb-5 fw-bold" style="font-family: 'DM Serif Text'">
@@ -82,174 +12,49 @@
       <div id="coffeeCarousel" class="carousel slide" data-bs-ride="false">
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <div class="row">
-              <% dataMenu.slice(0, 3).forEach(item => { %>
-              <div class="col-md-4">
-                <div class="card border-0 shadow-sm coffee-card p-4 m-2">
-                  <div class="discount-badge">-30%</div>
-                  <div class="text-center my-4">
-                    <img
-                      src="/img/<%= item.gambar %>"
-                      class="card-img-top"
-                      alt="<%= item.nama_produk %>"
-                      style="height: 200px; object-fit: contain"
-                    />
-                  </div>
-                  <div class="card-body text-center p-0">
-                    <h5 class="fw-bold mb-1 text-dark">
-                      <%= item.nama_produk %>
-                    </h5>
-                    <p class="text-muted small">500 g</p>
+            <div class="row justify-content-center">
+              <% if (dataMenu && dataMenu.length > 0) { %>
+                <% dataMenu.forEach(item => { %>
+                <div class="col-md-4 mb-4">
+                  <div class="card border-0 shadow-sm coffee-card p-4 m-2" data-product-id="<%= item.id %>" data-product-name="<%= item.nama_produk %>" data-product-price="<%= item.harga %>" data-product-image="<%= item.gambar %>">
+  <div class="text-center my-4">
+    <img src="/img/<%= item.gambar %>" class="card-img-top product-image" alt="<%= item.nama_produk %>" style="height: 200px; object-fit: contain" />
+  </div>
 
-                    <div
-                      class="d-flex justify-content-center align-items-center gap-2 mb-3"
-                    >
-                      <% var hargaAsli = item.harga / 0.7; %>
-                      <span
-                        class="text-muted text-decoration-line-through small"
-                        >Rp <%= Math.floor(hargaAsli).toLocaleString() %></span
-                      >
-                      <span class="text-danger fw-bold fs-5"
-                        >Rp <%= item.harga.toLocaleString() %></span
-                      >
-                    </div>
+  <div class="card-body text-center p-0">
+    <h5 class="fw-bold mb-1 text-dark product-name"><%= item.nama_produk %></h5>
+    
+    <div class="mb-3">
+      <span class="text-danger fw-bold fs-5 product-price">Rp <%= item.harga.toLocaleString() %></span>
+    </div>
 
-                    <form action="/add-to-cart" method="POST">
-                      <input
-                        type="hidden"
-                        name="menu_id"
-                        value="<%= item.id %>"
-                      />
-                      <input
-                        type="hidden"
-                        name="harga"
-                        value="<%= item.harga %>"
-                      />
+    <div class="cart-controls">
+      <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+        <label class="small text-muted">Jumlah:</label>
+        <input type="number" class="form-control form-control-sm text-center qty-input" value="1" min="1" style="width: 60px; border-radius: 10px" />
+      </div>
 
-                      <div
-                        class="d-flex justify-content-center align-items-center gap-2 mb-3"
-                      >
-                        <label class="small text-muted">Jumlah:</label>
-                        <input
-                          type="number"
-                          name="jumlah"
-                          value="1"
-                          min="1"
-                          class="form-control form-control-sm text-center"
-                          style="width: 60px; border-radius: 10px"
-                        />
-                      </div>
-
-                      <button
-                        type="submit"
-                        class="btn btn-add-cart btn-warning w-100 shadow-sm text-white fw-bold rounded-pill"
-                      >
-                        Add to cart
-                      </button>
-                    </form>
-                  </div>
+      <button type="button" class="btn btn-add-cart btn-warning w-100 shadow-sm text-white fw-bold rounded-pill">
+        Add to cart
+      </button>
+    </div>
+  </div>
+</div>
+                
+              <% } else { %>
+                <div class="col-12 text-center">
+                  <p class="text-muted">Menu belum tersedia.</p>
                 </div>
-              </div>
-              <% }) %>
+              <% } %>
             </div>
           </div>
-
-          <% if (dataMenu.length > 3) { %>
-          <div class="carousel-item">
-            <div class="row">
-              <% dataMenu.slice(3, 6).forEach(item => { %>
-              <div class="col-md-4">
-                <div class="card border-0 shadow-sm coffee-card p-4 m-2">
-                  <div class="discount-badge">-30%</div>
-                  <div class="text-center my-4">
-                    <img
-                      src="/img/<%= item.gambar %>"
-                      class="card-img-top"
-                      alt="<%= item.nama_produk %>"
-                      style="height: 200px; object-fit: contain"
-                    />
-                  </div>
-                  <div class="card-body text-center p-0">
-                    <h5 class="fw-bold mb-1 text-dark">
-                      <%= item.nama_produk %>
-                    </h5>
-                    <p class="text-muted small">500 g</p>
-
-                    <div
-                      class="d-flex justify-content-center align-items-center gap-2 mb-3"
-                    >
-                      <% var hargaAsli = item.harga / 0.7; %>
-                      <span
-                        class="text-muted text-decoration-line-through small"
-                        >Rp <%= Math.floor(hargaAsli).toLocaleString() %></span
-                      >
-                      <span class="text-danger fw-bold fs-5"
-                        >Rp <%= item.harga.toLocaleString() %></span
-                      >
-                    </div>
-
-                    <form action="/add-to-cart" method="POST">
-                      <input
-                        type="hidden"
-                        name="menu_id"
-                        value="<%= item.id %>"
-                      />
-                      <input
-                        type="hidden"
-                        name="harga"
-                        value="<%= item.harga %>"
-                      />
-
-                      <div
-                        class="d-flex justify-content-center align-items-center gap-2 mb-3"
-                      >
-                        <label class="small text-muted">Jumlah:</label>
-                        <input
-                          type="number"
-                          name="jumlah"
-                          value="1"
-                          min="1"
-                          class="form-control form-control-sm text-center"
-                          style="width: 60px; border-radius: 10px"
-                        />
-                      </div>
-
-                      <button
-                        type="submit"
-                        class="btn btn-add-cart btn-warning w-100 shadow-sm text-white fw-bold rounded-pill"
-                      >
-                        Add to cart
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <% }) %>
-            </div>
-          </div>
-          <% } %>
         </div>
-
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#coffeeCarousel"
-          data-bs-slide="prev"
-          style="width: 5%; filter: invert(100%)"
-        >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#coffeeCarousel"
-          data-bs-slide="next"
-          style="width: 5%; filter: invert(100%)"
-        >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        </button>
       </div>
     </div>
   </section>
+
   <%- include('partials/footer') %>
+
+  <script src="/js/cart.js"></script>
+</body>
 </html>

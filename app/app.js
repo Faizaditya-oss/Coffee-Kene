@@ -2,23 +2,29 @@ require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
 const path = require('path');
+const session = require('express-session'); // Wajib untuk fitur Cart
 const app = express();
 
-// Mengambil port dari environment variable (Docker) atau default 3000
+// Mengambil port dari environment variable atau default 3000
 const port = process.env.APP_PORT || 3000;
 
-// 1. KONFIGURASI DATABASE (Gunakan Pool agar lebih stabil di Docker)
+const db = require('./config/database'); // Memanggil file config tadi
+const indexRouter = require('./routes/index')(db); // Mengirim koneksi ke routes
+
+app.use('/', indexRouter);
+
+// 1. KONFIGURASI DATABASE (Pool)
 const db = mysql.createPool({
     host: process.env.DB_HOST || 'db_service',
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASS || 'rootpassword',
+    database: process.env.DB_NAME || 'kopikene_db',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 });
 
-// Cek koneksi ke Database saat startup
+// Cek koneksi ke Database
 db.getConnection((err, connection) => {
     if (err) {
         console.error('⚠️ Database belum siap atau error:', err.message);
@@ -32,20 +38,32 @@ db.getConnection((err, connection) => {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'view'));
 
+// Middleware dasar
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json()); // Penting untuk menangani request POST JSON
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
-// 3. PANGGIL MODULAR ROUTES (Sesuai tugas kamu)
-// Pastikan file ini ada di folder routes/index.js
+// 3. KONFIGURASI SESSION (Harus di atas Router)
+app.use(session({
+    secret: 'kopi-kene-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false, // Set false karena kita belum pakai HTTPS
+        maxAge: 1000 * 60 * 60 * 24 // Simpan session selama 1 hari
+    }
+}));
+
+// 4. PANGGIL MODULAR ROUTES
 try {
+    // Mengirimkan objek 'db' ke file routes/index.js
     const indexRouter = require('./routes/index')(db);
     app.use('/', indexRouter);
 } catch (error) {
     console.error('❌ Gagal memuat file routes/index.js:', error.message);
 }
 
-// 4. JALANKAN SERVER
+// 5. JALANKAN SERVER
 app.listen(port, () => {
     console.log(`🚀 Server berjalan di port ${port}`);
 });

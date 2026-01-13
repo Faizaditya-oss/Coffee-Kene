@@ -1,9 +1,11 @@
-// Fungsi untuk memperbarui angka di ikon keranjang Navbar
+// public/js/cart.js
+
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const countElement = document.getElementById('cart-count');
 
-    // Menghitung total quantity
+    if (!countElement) return;
+
     const totalItems = cart.reduce((sum, item) => sum + item.jumlah, 0);
 
     if (totalItems > 0) {
@@ -14,50 +16,67 @@ function updateCartCount() {
     }
 }
 
-// Inisialisasi saat halaman dimuat
 document.addEventListener('DOMContentLoaded', function () {
     updateCartCount();
 
-    // Logika Tombol Plus (+) dan Minus (-)
-    document.querySelectorAll('.quantity-control').forEach(control => {
-        const btnMinus = control.querySelector('button:first-child');
-        const btnPlus = control.querySelector('button:last-child');
-        const spanQty = control.querySelector('span');
+    document.addEventListener('click', function (e) {
+        // Cari apakah yang diklik adalah tombol add-to-cart
+        const button = e.target.closest('.btn-add-cart');
+        if (!button) return;
 
-        btnPlus.onclick = () => {
-            spanQty.innerText = parseInt(spanQty.innerText) + 1;
-        };
+        // Cari container kartu produknya
+        const card = button.closest('.coffee-card');
+        if (!card) return;
 
-        btnMinus.onclick = () => {
-            let current = parseInt(spanQty.innerText);
-            if (current > 1) spanQty.innerText = current - 1;
-        };
-    });
+        try {
+            // Ambil data dari data attributes (lebih aman dan pasti ada)
+            const id = card.getAttribute('data-product-id');
+            const nama = card.getAttribute('data-product-name');
+            const harga = parseInt(card.getAttribute('data-product-price')) || 0;
+            const gambar = card.getAttribute('data-product-image');
+            const elQty = card.querySelector('.qty-input');
+            const jumlah = elQty ? (parseInt(elQty.value) || 1) : 1;
 
-    // Logika Tombol Add to Cart
-    document.querySelectorAll('.btn-add-cart').forEach(button => {
-        button.addEventListener('click', function () {
-            const card = this.closest('.coffee-card');
+            if (!id || !nama || !harga) {
+                console.error("Data produk tidak lengkap:", {id, nama, harga});
+                alert("❌ Gagal menambahkan ke keranjang");
+                return;
+            }
+
             const product = {
-                id: Date.now(), // ID unik sederhana
-                nama: card.querySelector('h5').innerText,
-                harga: parseInt(card.querySelector('.text-danger').innerText.replace(/[^0-9]/g, '')),
-                gambar: card.querySelector('img').src,
-                jumlah: parseInt(card.querySelector('.quantity-control span').innerText)
+                id: id,
+                nama: nama,
+                harga: harga,
+                gambar: '/img/' + gambar,
+                jumlah: jumlah
             };
 
-            // Simpan ke LocalStorage
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.push(product);
-            localStorage.setItem('cart', JSON.stringify(cart));
+            addToLocalStorage(product);
 
-            // Update angka di navbar secara real-time
-            updateCartCount();
+            // Balikin input ke angka 1
+            if (elQty) elQty.value = 1;
 
-            alert(product.nama + " berhasil ditambahkan ke keranjang!");
-        });
+        } catch (error) {
+            console.error("Gagal menambahkan ke keranjang:", error);
+            alert("❌ Terjadi kesalahan");
+        }
     });
 });
 
-// Jalankan update angka setiap kali halaman ganti
-document.addEventListener('DOMContentLoaded', updateCartCount);
+function addToLocalStorage(product) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingItemIndex = cart.findIndex(item => item.id === product.id);
+
+    if (existingItemIndex > -1) {
+        // Jika produk sudah ada, tambah jumlahnya
+        cart[existingItemIndex].jumlah += product.jumlah;
+    } else {
+        // Jika produk baru, tambahkan ke array
+        cart.push(product);
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    alert(`☕ "${product.nama}" (${product.jumlah}x) sudah masuk keranjang!`);
+}
+
