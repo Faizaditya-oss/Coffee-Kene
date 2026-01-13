@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+
+<div class="container mt-5 pt-5">
+  <h2 class="fw-bold mb-4" style="font-family: 'DM Serif Text'">
+    Keranjang Belanja Anda
+  </h2>
+
+  <div id="cart-list" class="row"></div>
+
+  <div class="mt-4 p-4 border rounded-4 bg-light shadow-sm">
+    <h4>
+      Total Bayar:
+      <span id="total-harga" class="text-danger fw-bold">Rp 0</span>
+    </h4>
+    <button
+      class="btn btn-warning rounded-pill px-5 mt-2 fw-bold text-white shadow"
+    >
+      CHECKOUT
+    </button>
+  </div>
+</div>
+
+<script src="/js/renderCart.js"></script>
+
+<%- include('partials/footer') %>

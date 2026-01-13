@@ -1,0 +1,242 @@
+/* .navbar-nav:hover {
+    color: bisque;
+}
+.navbar-nav::after {
+    color: aqua;
+}
+.navbar-nav:hover::after{
+    color: beige;
+} */
+html {
+  scroll-behavior: smooth;
+}
+
+#home,
+#profile,
+#menu,
+#contact {
+  scroll-margin-top: 70px;
+}
+
+.navbar .navbar-nav a:hover {
+  color: #fff;
+}
+.navbar .navbar-nav a::after {
+  content: "";
+  display: block;
+  /* padding-bottom: 0.5rem; */
+  border-bottom: 0.1rem solid #fafafa;
+  transform: scaleX(0);
+  transition: 0.3s linear;
+}
+
+.navbar .navbar-nav a:hover::after {
+  transform: scaleX(0.5);
+}
+
+body {
+  font-family: "DM Serif Text";
+  min-height: 2000px;
+}
+
+/* Hilangkan atau hapus .hero::before karena gambar sekarang di HTML */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  background-color: #ffffff; /* Latar belakang putih sesuai gambar kanan */
+  font-family: "Work Sans", sans-serif;
+}
+
+/* Tipografi untuk mengikuti style gambar kanan */
+.hero h1 {
+  /* color: #333 !important; */
+  line-height: 1.1;
+}
+
+.hero h4 {
+  color: #0d6efd !important; /* Warna biru untuk "What's new?" */
+  text-transform: none;
+}
+
+.hero p {
+  color: #555;
+  max-width: 500px;
+}
+
+.hero a.btn-warning:hover {
+  background-color: #e68a00 !important;
+  transform: translateY(-5px);
+  transition: 0.3s;
+}
+
+/* Navigasi tetap menggunakan style Anda */
+.navbar .navbar-nav a:hover::after {
+  transform: scaleX(0.5);
+}
+
+/* Hilangkan atau hapus .hero::before karena gambar sekarang di HTML */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  background-color: #ffffff; /* Latar belakang putih sesuai gambar kanan */
+  font-family: "Work Sans", sans-serif;
+}
+
+/* Tipografi untuk mengikuti style gambar kanan */
+.hero h1 {
+  color: #333 !important;
+  line-height: 1.1;
+}
+
+.hero h4 {
+  color: #0d6efd !important; /* Warna biru untuk "What's new?" */
+  text-transform: none;
+}
+
+.hero p {
+  color: #555;
+  max-width: 500px;
+}
+
+.hero a.btn-warning:hover {
+  background-color: #e68a00 !important;
+  transform: translateY(-2px);
+  transition: 0.3s;
+}
+
+/* Navigasi tetap menggunakan style Anda */
+.navbar .navbar-nav a:hover::after {
+  transform: scaleX(0.5);
+}
+
+.social-icon {
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+.social-icon:hover {
+  transform: scale(1.2);
+  color: #ff9800 !important;
+}
+
+/* Card Container */
+.coffee-card {
+    border-radius: 50px !important; /* Membuat sudut sangat melengkung */
+    background-color: #ffffff;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.coffee-card:hover {
+    transform: translateY(-10px);
+}
+
+/* Badge Diskon Merah */
+.discount-badge {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background-color: #ff4747;
+    color: white;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 8px rgba(255, 71, 71, 0.3);
+    z-index: 10;
+}
+
+.quantity-control button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important; /* Menghilangkan sisa ruang antar baris teks */
+}
+
+.quantity-control i {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Kontrol Quantity (+ 1 -) */
+.quantity-control {
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 30px;
+    /* width: 130px; */
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    padding: 2px 10px;
+}
+
+/* Tombol Add to Cart */
+.btn-add-cart {
+    background-color: #ffa600;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.btn-add-cart:hover {
+    background-color: #e69500;
+    color: white;
+}
+
+.carousel-control-prev { left: -50px; }
+.carousel-control-next { right: -50px; }
+
+@media (max-width: 768px) {
+    .carousel-control-prev, .carousel-control-next { display: none; } /* Sembunyikan panah di HP agar tidak berantakan */
+}
+
+/* Laptop */
+@media (max-width: 992px) {
+  html{
+    font-size: 75% ;
+  } 
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  html {
+    font-size: 65%;
+  }
+  /* .about {
+    padding-top: 1rem !important; 
+    padding-bottom: 1rem !important;
+  } */
+   
+  .offcanvas-end {
+    /* Mengatur lebar menu menjadi 50% dari lebar layar */
+    width: 50% !important;
+    
+    /* Opsional: Menjaga agar tidak terlalu sempit di HP yang sangat kecil */
+    min-width: 200px; 
+  }
+}
+
+/* Handphone */
+@media (max-width: 576px) {
+  html {
+    font-size: 60%;
+  }
+  /* .about {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  } */
+   .offcanvas-end {
+    /* Mengatur lebar menu menjadi 50% dari lebar layar */
+    width: 50% !important;
+    
+    /* Opsional: Menjaga agar tidak terlalu sempit di HP yang sangat kecil */
+    min-width: 200px; 
+  }
+}
